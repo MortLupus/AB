@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
+using Castle.Windsor.Installer;
+using Infrastructure;
+using Infrastructure.Windsor;
+using Raven.Client;
+using MVC4.Infrastructure.AutoMapper;
 
 namespace MVC4
 {
@@ -15,6 +14,24 @@ namespace MVC4
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public MvcApplication()
+        {
+            EndRequest += SaveSessionChanges;
+        }
+
+        private void SaveSessionChanges(object sender, EventArgs e)
+        {
+            using (var session = IoC.Instance.Resolve<IDocumentSession>())
+            {
+                if (session == null)
+                    return;
+                if (Server.GetLastError() != null)
+                    return;
+
+                session.SaveChanges();
+            }
+        }
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -23,28 +40,38 @@ namespace MVC4
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
+
         }
 
         protected void Application_Start()
         {
+            BootstrapContainer();
+
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            BundleTable.Bundles.RegisterTemplateBundles();
+            AutoMapperConfiguration.Configure();
+
+        }
+
+        private static void BootstrapContainer()
+        {
+            IoC.Instance.Install(FromAssembly.This());
+            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(IoC.Instance.Kernel));
+        }
+
+        protected void Application_End()
+        {
+            IoC.Instance.Dispose();
         }
     }
 }

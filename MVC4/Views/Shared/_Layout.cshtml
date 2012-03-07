@@ -4,10 +4,17 @@
         <meta charset="utf-8" />
         <title>@ViewBag.Title - My ASP.NET MVC Application</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/css")" rel="stylesheet" type="text/css" />
-        <link href="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Content/themes/base/css")" rel="stylesheet" type="text/css" />
-        <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/Scripts/js")"></script>
         <meta name="viewport" content="width=device-width" />
+		@{
+			Bundles.Reference("Content");
+			Bundles.Reference("Scripts/CDN/jquery-1.7.1.js");
+			Bundles.Reference("Scripts/CDN/jquery-ui-1.8.17.js");
+			Bundles.Reference("Scripts");
+			Bundles.Reference("jquery.validate");
+			Bundles.Reference("jquery.unobtrusive-ajax");
+			Bundles.Reference("jquery.validate.unobtrusive");
+		}
+		@Bundles.RenderStylesheets()
     </head>
     <body>
         <header>
@@ -48,5 +55,6 @@
                 </div>
             </div>
         </footer>
+		@Bundles.RenderScripts()
     </body>
 </html>
