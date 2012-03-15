@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using MVC4.Models;
 using Raven.Client;
 
 namespace MVC4.Extensions.Raven
@@ -18,9 +19,9 @@ namespace MVC4.Extensions.Raven
         //    return user;
         //}
 
-        //public static User GetUserByEmail(this IDocumentSession session, string email)
-        //{
-        //    return session.Query<User>().FirstOrDefault(u => u.EmailAddress == email);
-        //}
+        public static User GetUserByEmail(this IDocumentSession session, string email)
+        {
+            return session.Query<User>().FirstOrDefault(u => u.Email == email);
+        }  
     }
 }

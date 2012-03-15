@@ -14,23 +14,23 @@ namespace MVC4
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        public MvcApplication()
-        {
-            EndRequest += SaveSessionChanges;
-        }
+        //public MvcApplication()
+        //{
+        //    EndRequest += SaveSessionChanges;
+        //}
 
-        private void SaveSessionChanges(object sender, EventArgs e)
-        {
-            using (var session = IoC.Instance.Resolve<IDocumentSession>())
-            {
-                if (session == null)
-                    return;
-                if (Server.GetLastError() != null)
-                    return;
+        //private void SaveSessionChanges(object sender, EventArgs e)
+        //{
+        //    using (var session = IoC.Instance.Resolve<IDocumentSession>())
+        //    {
+        //        if (session == null)
+        //            return;
+        //        if (Server.GetLastError() != null)
+        //            return;
 
-                session.SaveChanges();
-            }
-        }
+        //        session.SaveChanges();
+        //    }
+        //}
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {

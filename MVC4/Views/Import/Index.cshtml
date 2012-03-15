@@ -1,8 +1,22 @@
-﻿@model dynamic
+﻿@model MVC4.ViewModels.Import.ImportModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Index";
+
+}
+@section head
+{
+	@{
+		Bundles.Reference("Scripts/Pages/Import.js");
+	}
 }
 
-<h2>title</h2>
+<header>
+    <h2>Roster Import</h2>
+</header>
+
+@using (Html.BeginForm("Index", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="file" id="file">
+    <input type="submit" value="ok"/>
+}

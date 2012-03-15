@@ -102,6 +102,12 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.0.0.4001\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="DataAnnotationsExtensions">
+      <HintPath>..\packages\DataAnnotationsExtensions.1.0.1\lib\NETFramework40\DataAnnotationsExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAnnotationsExtensions.ClientValidation">
+      <HintPath>..\packages\DataAnnotationsExtensions.MVC3.1.0.1\lib\NETFramework40\DataAnnotationsExtensions.ClientValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Esent.Interop">
       <HintPath>..\packages\RavenDB-Embedded.1.0.701\lib\net40\Esent.Interop.dll</HintPath>
     </Reference>
@@ -239,10 +245,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
+    <Compile Include="Controllers\RavenController.cs" />
     <Compile Include="Extensions\Automapper\AutoMapperExtensions.cs" />
     <Compile Include="Extensions\Automapper\Resolvers\MvcHtmlStringConverter.cs" />
     <Compile Include="Extensions\Automapper\Resolvers\RavenIdResolver.cs" />
@@ -255,15 +263,31 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\AutoMapper\AutoMapperConfiguration.cs" />
+    <Compile Include="Infrastructure\AutoMapper\Profiles\UserProfile.cs" />
     <Compile Include="Installers\AutoMapperConverterInstaller.cs" />
     <Compile Include="Installers\AutoMapperProfileInstaller.cs" />
     <Compile Include="Installers\ControllersInstaller.cs" />
     <Compile Include="Installers\ModelBinderInstaller.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Integration\BattleScribe\BattleScribe.cs" />
+    <Compile Include="Integration\BattleScribe\Roster.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Fantasy\Army.cs" />
+    <Compile Include="Models\GameSystem\Category.cs" />
+    <Compile Include="Models\GameSystem\ProfileType.cs" />
+    <Compile Include="Models\GameSystem\GameSystem.cs" />
+    <Compile Include="Models\Roster.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Account\ChangePasswordModel.cs" />
+    <Compile Include="ViewModels\Account\LoginModel.cs" />
+    <Compile Include="ViewModels\Account\RegisterModel.cs" />
+    <Compile Include="ViewModels\Import\ImportModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bundle.txt" />
+    <Content Include="Content\jquery.fileupload-ui.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -293,6 +317,25 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\progressbar.gif" />
+    <Content Include="Scripts\Application.js" />
+    <Content Include="Scripts\bundle.txt" />
+    <Content Include="Scripts\CDN\jquery-1.7.1.js" />
+    <Content Include="Scripts\CDN\jquery-ui-1.8.17.js" />
+    <Content Include="Scripts\CDN\jquery.mobile-1.0.js" />
+    <Content Include="Scripts\CDN\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\CDN\jquery.validate-1.9.js" />
+    <Content Include="Scripts\CDN\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\CDN\knockout-2.0.0.js" />
+    <Content Include="Scripts\CDN\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\CDN\modernizr-2.0.6-development-only.js" />
+    <Content Include="Scripts\jquery.fileupload-ip.js" />
+    <Content Include="Scripts\jquery.fileupload-ui.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.iframe-transport.js" />
+    <Content Include="Scripts\Pages\Import.js" />
+    <Content Include="Scripts\Reference\jquery-1.7.1-vsdoc.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -330,7 +373,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Infrastructure\AutoMapper\Profiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

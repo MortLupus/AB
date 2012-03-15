@@ -1,10 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Infrastructure;
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Embedded;
 
 namespace MVC4.Installers
 {
@@ -14,7 +16,17 @@ namespace MVC4.Installers
         {
             container.Register(
                 Component.For<IDocumentStore>().Instance(CreateDocumentStore()).LifeStyle.Singleton,
-                Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).LifeStyle.PerWebRequest);
+                Component.For<IDocumentSession>().UsingFactoryMethod(GetDocumentSession).OnDestroy(Test).LifeStyle.PerWebRequest);
+        }
+
+        private void Test(IDocumentSession session)
+        {
+            if (session == null)
+                return;
+            if (HttpContext.Current.Server.GetLastError() != null)
+                 return;
+
+            session.SaveChanges();
         }
 
         private static IDocumentStore CreateDocumentStore()
@@ -23,6 +35,10 @@ namespace MVC4.Installers
                             {
                                 ConnectionStringName = "RavenDB"
                             };
+            //var store = new EmbeddableDocumentStore
+            //                {
+            //                    DataDirectory = "Data"
+            //                };
             store.Initialize();
             return store;
         }
@@ -32,5 +48,7 @@ namespace MVC4.Installers
             var store = kernel.Resolve<IDocumentStore>();
             return store.OpenSession();
         }
+
+
     }
 }
