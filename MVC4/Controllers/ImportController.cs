@@ -25,11 +25,11 @@ namespace MVC4.Controllers
 
             //if (!ModelState.IsValid)
             //    return View();
-
-            if(model.Type == ProgramType.BattleScribe)
+            var i = 0;
+            if (model.Type == ProgramType.BattleScribe)
                 ImportBattleScribe(file.InputStream);
-            
-            return Json(new {Complete = "true"});
+
+            return Json(new {Complete = i});
 
         }
 
@@ -38,9 +38,12 @@ namespace MVC4.Controllers
             var battleScribe = new BattleScribe();
 
             var xmlSerializer = new XmlSerializer(typeof (Roster));
-            var roster = (Roster)xmlSerializer.Deserialize(inputStream);
+            var roster = (Roster) xmlSerializer.Deserialize(inputStream);
 
-            battleScribe.Import(roster);
+            var army = battleScribe.Import(roster);
+
+            RavenSession.Store(army);
+
         }
     }
 }

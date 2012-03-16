@@ -11,16 +11,18 @@ namespace MVC4.Integration.BattleScribe
     {
         public Roster()
         {
-            Categories = new Categories();
-            Selections = new Selections();
+            Categories = new List<string>();
+            Selections = new List<Selection>();
         }
 
-        [XmlElement("categories")]
-        public Categories Categories { get; set; }
+        [XmlArray("categories")]
+        [XmlArrayItem("category")]
+        public List<string> Categories { get; set; }
 
-        [XmlElement("selections")]
-        public Selections Selections { get; set; }
-        
+        [XmlArray("selections")]
+        [XmlArrayItem("selection")]
+        public List<Selection> Selections { get; set; }
+
         [XmlAttribute("catalogueName")]
         public string CatalogueName { get; set; }
 
@@ -31,23 +33,20 @@ namespace MVC4.Integration.BattleScribe
         public string Name { get; set; }
 
         [XmlAttribute("points")]
-        public int Points { get; set; }
+        public decimal Points { get; set; }
 
         [XmlAttribute("pointsLimit")]
-        public int PointsLimit { get; set; }
-    
-    }
-    
-    [Serializable]
-    public class Selections
-    {
-        public Selections()
-        {
-            SelectionList = new List<Selection>();
-        }
+        public decimal PointsLimit { get; set; }
 
-        [XmlArray("selection")]
-        public List<Selection> SelectionList { get; set; }
+        [XmlAttribute("battleScribeVersion")]
+        public string BattleScribeVersion { get; set; }
+
+        [XmlAttribute("catalogueId")]
+        public Guid CatalogueId { get; set; }
+
+        [XmlAttribute("catalogueRevision")]
+        public string CatalogueRevision { get; set; }
+
     }
 
     [Serializable]
@@ -55,9 +54,9 @@ namespace MVC4.Integration.BattleScribe
     {
         public Selection()
         {
-            Selections = new Selections();
-            Profiles = new Profiles();
-            Rules = new Rules();
+            Selections = new List<Selection>();
+            //Profiles = new Profiles();
+            //Rules = new Rules();
         }
         
         [XmlAttribute("category")]
@@ -67,44 +66,32 @@ namespace MVC4.Integration.BattleScribe
         public string Name { get; set; }
 
         [XmlAttribute("type")]
-        public int Type { get; set; }
+        public string Type { get; set; }
 
         [XmlAttribute("number")]
-        public int Number { get; set; }
+        public decimal Number { get; set; }
 
         [XmlAttribute("points")]
-        public int Points { get; set; }
+        public decimal Points { get; set; }
 
-        [XmlElement("selections")]
-        public Selections Selections { get; set; }
+        [XmlArray("selections")]
+        [XmlArrayItem("selection")]
+        public List<Selection> Selections { get; set; }
 
-        [XmlElement("profiles")]
-        public Profiles Profiles { get; set; }
+        //[XmlElement("profiles")]
+        //public Profiles Profiles { get; set; }
 
-        [XmlElement("rules")]
-        public Rules Rules { get; set; }
+        //[XmlElement("rules")]
+        //public Rules Rules { get; set; }
 
     }
 
-    public class Profiles
-    {
-    }
+    //public class Profiles
+    //{
+    //}
 
-    public class Rules
-    {
-    }
-
-
-    [Serializable]
-    public class Categories
-    {
-        public Categories()
-        {
-            CategoryList = new List<string>();
-        }
-
-        [XmlArray("category")]
-        public List<String> CategoryList { get; set; }
-    }
+    //public class Rules
+    //{
+    //}
 
 }

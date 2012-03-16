@@ -1,17 +1,20 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections.Generic;
 using MVC4.Models.Fantasy;
-using MVC4.Extensions;
 
 namespace MVC4.Integration.BattleScribe
 {
     public class BattleScribe
     {
-        public void Import(Roster roster)
+        public Army Import(Roster roster)
         {
-            var army = new Army();
+            var fantasy = new FantasyArmy();
+            var army = fantasy.CreateArmy(roster);
 
-            Debugger.Break();
+            return army;
+
+
         }
+
+
     }
 }

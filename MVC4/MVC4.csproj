@@ -269,7 +269,9 @@
     <Compile Include="Installers\ControllersInstaller.cs" />
     <Compile Include="Installers\ModelBinderInstaller.cs" />
     <Compile Include="Installers\RavenInstaller.cs" />
+    <Compile Include="Integration\BattleScribe\AutoMapper\BattleScribeProfile.cs" />
     <Compile Include="Integration\BattleScribe\BattleScribe.cs" />
+    <Compile Include="Integration\BattleScribe\FantasyArmy.cs" />
     <Compile Include="Integration\BattleScribe\Roster.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Fantasy\Army.cs" />

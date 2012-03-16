@@ -18,7 +18,6 @@ namespace MVC4.Models.Fantasy
             a1.HasChampion = true;
             a1.HasMusician = true;
             a1.HasStandard = true;
-            a1.Standard.MagicStandard = new Upgrade {Name = "Banner of Eternal Flame", Points = 20};
 
             a.Core.Add(a1);
         }
@@ -27,8 +26,18 @@ namespace MVC4.Models.Fantasy
 
     public class Army : Entity
     {
+        public Army()
+        {
+            Core = new Core();
+            Special = new Special();
+            Rare = new Rare();
+            Heroes = new Heroes();
+            Lords = new Lords();
+        }
+
         public string Name { get; set; }
         public string Race { get; set; }
+//        public Race Race { get; set; }
         public Core Core { get; set; }
         public Special Special { get; set; }
         public Rare Rare { get; set; }
@@ -92,20 +101,21 @@ namespace MVC4.Models.Fantasy
 
     public class Unit : Item
     {
+        public Model Model { get; set; }
         public Character Champion { get; set; }
-        public Character Standard { get; set; }
-        public Character Musician { get; set; }
 
         public bool HasChampion { get; set; }
         public bool HasStandard { get; set; }
         public bool HasMusician { get; set; }
 
+        public uint StandardPoints { get; set; }
+        public uint MusicianPoints { get; set; }
+
         public override uint TotalPoints()
         {
             return ModelCount*Points +
-                   (HasChampion ? Champion.Points : 0) +
-                   (HasStandard ? Standard.Points : 0) +
-                   (HasMusician ? Musician.Points : 0);
+                   (HasChampion ? Champion.Points : 0) 
+                   + StandardPoints + MusicianPoints;
 
         }
     }
@@ -136,7 +146,8 @@ namespace MVC4.Models.Fantasy
         public Characteristic Initiative { get; set; }
         public Characteristic Attacks { get; set; }
         public Characteristic Leadership { get; set; }
-        public ArmourSave ArmourSave { get; set; }
+        public String ArmourSave { get; set; }
+        public String WardSave { get; set; }
         public IList<Upgrade> Armour { get; set; }
         public IList<Upgrade> Weapons { get; set; }
 
@@ -146,10 +157,6 @@ namespace MVC4.Models.Fantasy
                    Convert.ToUInt32(Armour.Sum(x => x.Points)) +
                    Convert.ToUInt32(Weapons.Sum(x => x.Points));
         }
-    }
-
-    public class ArmourSave
-    {
     }
 
     public class Characteristic

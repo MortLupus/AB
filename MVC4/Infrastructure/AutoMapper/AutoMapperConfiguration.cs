@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using AutoMapper;
 using MVC4.Extensions.Automapper.Resolvers;
 using Infrastructure;
@@ -18,6 +19,8 @@ namespace MVC4.Infrastructure.AutoMapper
                                   });
 
             Mapper.CreateMap<string, MvcHtmlString>().ConvertUsing<MvcHtmlStringConverter>();
+
+            Mapper.CreateMap<decimal, uint>().ConvertUsing(Convert.ToUInt32);
 
         }  
 }
